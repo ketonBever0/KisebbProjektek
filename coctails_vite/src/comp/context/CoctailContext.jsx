@@ -12,8 +12,21 @@ export const CoctailProvider = ({ children }) => {
 
 
     const [Coctails, setCoctails] = useState(null);
+    const [IsPending, setIsPending] = useState(false);
 
 
+    const fetchByName = async (name) => {
+        await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
+            .then(res => res.json())
+            .then(data => {
+                setCoctails(data.drinks);
+                setIsPending(false);
+            })
+            .catch(err => {
+                setIsPending(false);
+                console.log(err);
+            });
+    }
 
 
     const fetchByIngredient = async (ingredient) => {
@@ -21,24 +34,30 @@ export const CoctailProvider = ({ children }) => {
 
         await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
             .then(res => res.json())
-            .then(data => setCoctails(data.drinks))
-            .catch(err => console.log(err));
-
-        // setCoctails({
-        //     fail: true,
-        //     error: err
-        // })
-
-
+            .then(data => {
+                setCoctails(data.drinks);
+                setIsPending(false);
+            })
+            .catch(err => {
+                setIsPending(false);
+                console.log(err);
+            });
     }
+
 
 
 
 
     return <CoctailContext.Provider value={{
         update,
+        IsPending,
+        setIsPending,
+
         fetchByIngredient,
-        Coctails
+        fetchByName,
+
+        Coctails,
+        setCoctails
     }}>{children}</CoctailContext.Provider>
 
 

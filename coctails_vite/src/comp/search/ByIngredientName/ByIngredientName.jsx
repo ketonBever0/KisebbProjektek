@@ -1,55 +1,45 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import CoctailContext from '../../context/CoctailContext';
 import ByIngredientNameResults from './ByIngredientNameResults';
 
+import Notify from "../../../Functions";
 
 function ByIngredientName() {
 
     // const [SearchValue, setSearchValue] = useState('');
+    // const [IsPending, setIsPending] = useState(false);
     const [FormData, setFormData] = useState('');
+    const currentFormData = useRef();
 
 
-    // const update = () => {
-    //     setRefresh((prev) => !prev);
-    // }
 
-    const { fetchByIngredient, Coctails } = useContext(CoctailContext);
-
-
-    const Search = (data) => {
-
-        // e.preventDefault();
-        // console.log(Coctails);
-        fetchByIngredient(data);
+    const {
+        IsPending,
+        setIsPending,
+        fetchByIngredient,
+        Coctails,
+        setCoctails
+    } = useContext(CoctailContext);
 
 
-    }
+    const Search = async (form) => {
 
-
-    // useEffect(() => {
-
-    //     if (SearchValue !== '') {
-    //         fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${SearchValue}`)
-    //             .then(res => res.json())
-    //             .then(data => setCoctails(data.drinks))
-    //             .catch(err => console.log(err));
-    //     }
-    // }, [SearchValue])
-
-    const Listing = () => {
-        try {
-            return (
-                <div className='justify-center items-center grid lg:grid-cols-4 md:grid-cols-1 gap-8'>
-                    {Coctails.map((coctails, index) => (<ByIngredientNameResults key={index} coctails={coctails} />))}
-                </div>
-            )
-        }
-        catch {
-            return (<div>Nincs ilyen hozzávaló.</div>)
+        if (form == "" || form == null) {
+            setCoctails(null);
+            currentFormData.current = form;
+            Notify.tError("No value entered!");
+        } else {
+            if (form != currentFormData.current) {
+                currentFormData.current = form;
+                setCoctails(null);
+                setIsPending(true);
+                await fetchByIngredient(form);
+            } else {
+                Notify.tError("Same value! No request sent!");
+            }
         }
     }
 
-    // console.log(Coctails);
 
     return (
         <div>
@@ -62,11 +52,11 @@ function ByIngredientName() {
                 <button className="btn btn-secondary ml-5" type="submit">Keresés</button>
             </form>
 
+            <div className='justify-center items-center grid lg:grid-cols-4 md:grid-cols-1 gap-8'>
 
-            {
-                Listing()
-                //MŰKÖDIKK GECCCIIII
-            }
+                {IsPending && <div>Please wait...</div>}
+                {!IsPending && Coctails && Coctails.map((coctails, index) => (<ByIngredientNameResults key={index} coctails={coctails} />))}
+            </div>
 
         </div>
     )
