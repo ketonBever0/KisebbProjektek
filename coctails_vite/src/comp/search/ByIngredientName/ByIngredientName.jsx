@@ -1,38 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import CoctailContext from '../../context/CoctailContext';
 import ByIngredientNameResults from './ByIngredientNameResults';
 
 
 function ByIngredientName() {
 
-    const [Coctails, setCoctails] = useState({});
+    // const [SearchValue, setSearchValue] = useState('');
     const [FormData, setFormData] = useState('');
-    const [SearchValue, setSearchValue] = useState('');
 
 
     // const update = () => {
     //     setRefresh((prev) => !prev);
     // }
 
+    const { fetchByIngredient, Coctails } = useContext(CoctailContext);
 
 
-    const Search = (e) => {
+    const Search = (data) => {
 
-        e.preventDefault();
+        // e.preventDefault();
         // console.log(Coctails);
-        setSearchValue(FormData);
+        fetchByIngredient(data);
+
 
     }
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (SearchValue !== '') {
-            fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${SearchValue}`)
-                .then(res => res.json())
-                .then(data => setCoctails(data.drinks))
-                .catch(err => console.log(err));
-        }
-    }, [SearchValue])
+    //     if (SearchValue !== '') {
+    //         fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${SearchValue}`)
+    //             .then(res => res.json())
+    //             .then(data => setCoctails(data.drinks))
+    //             .catch(err => console.log(err));
+    //     }
+    // }, [SearchValue])
 
     const Listing = () => {
         try {
@@ -52,7 +54,10 @@ function ByIngredientName() {
     return (
         <div>
             <div className="text-2xl mb-8">Összetevő szerint</div>
-            <form onSubmit={Search}>
+            <form onSubmit={(e) => {
+                e.preventDefault()
+                Search(FormData)
+            }}>
                 <input id='searchValue' type="text" onChange={(e) => { setFormData(e.target.value) }} value={FormData} placeholder="Összetevő neve" className="input input-bordered input-primary w-full max-w-xs mb-20" />
                 <button className="btn btn-secondary ml-5" type="submit">Keresés</button>
             </form>

@@ -15,7 +15,6 @@ function ByName() {
 
 
 
-      <Toaster />
     </div>
   )
 }
