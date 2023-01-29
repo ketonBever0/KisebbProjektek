@@ -1,10 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import CoctailContext from '../../context/CoctailContext';
 
-function ByIngredientNameResults({ coctails }) {
-
-    const [CoctailData, setCoctailData] = useState([]);
+function ByIngredientNameResults({ coctails }, searchId) {
 
 
+    const { Search, Coctails } = useContext(CoctailContext);
+    const [CoctailData, setCoctailData] = useState(null);
+
+
+    const showBadges = () => {
+
+        Search(coctails.idDrink, "byId");
+        console.log(Coctails);
+
+        return (
+            <div className="badge badge-outline">{Coctails.strCategory}</div>
+        )
+
+    }
+
+
+    const Details = () => {
+
+    }
 
 
     return (
@@ -18,7 +36,7 @@ function ByIngredientNameResults({ coctails }) {
                     {/* <div className="badge badge-secondary">NEW</div> */}
                 </h2>
                 <div className="card-actions justify-end">
-                    <div className="badge badge-outline">szia</div>
+                    <div className="badge badge-outline">teszt</div>
                     {/* <div className="badge badge-outline">{Category()}</div> */}
                 </div>
                 <div className="card-actions justify-right mt-4">

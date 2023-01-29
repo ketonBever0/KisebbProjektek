@@ -40,6 +40,9 @@ export const CoctailProvider = ({ children }) => {
                     case "byName":
                         await fetchByName(form);
                         break
+                    case "byId":
+                        await fetchById(form);
+                        break
                 }
             } else {
                 Notify.tError("Same value! No request sent!");
@@ -82,7 +85,7 @@ export const CoctailProvider = ({ children }) => {
             })
             .catch(err => {
                 setIsPending(false);
-                // console.log(err);
+                console.log(err);
             });
     }
 
@@ -94,12 +97,27 @@ export const CoctailProvider = ({ children }) => {
             .then(data => {
                 setCoctails(data.drinks);
                 setIsPending(false);
+                // console.log(data.drinks);
             })
             .catch(err => {
                 setIsPending(false);
                 console.log(err);
             });
-        console.log(Coctails);
+    }
+
+    const fetchById = async (id) => {
+
+        await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
+            .then(res => res.json())
+            .then(data => {
+                setCoctails(data.drinks);
+                setIsPending(false);
+                // console.log(data.drinks);
+            })
+            .catch(err => {
+                setIsPending(false);
+                console.log(err);
+            });
     }
 
 
