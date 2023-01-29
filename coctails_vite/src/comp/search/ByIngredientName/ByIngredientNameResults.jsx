@@ -17,10 +17,12 @@ function ByIngredientNameResults({ coctails }) {
                     {coctails.strDrink}
                     {/* <div className="badge badge-secondary">NEW</div> */}
                 </h2>
-                <p></p>
                 <div className="card-actions justify-end">
-                    <div className="badge badge-outline"></div>
+                    <div className="badge badge-outline">szia</div>
                     {/* <div className="badge badge-outline">{Category()}</div> */}
+                </div>
+                <div className="card-actions justify-right mt-4">
+                    <button className='btn btn-secondary'>What is this?</button>
                 </div>
             </div>
         </div>
