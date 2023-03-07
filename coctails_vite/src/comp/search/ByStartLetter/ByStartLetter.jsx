@@ -24,7 +24,7 @@ function ByStartLetter() {
     <div>
       <div className="text-2xl mb-8">Kezdőbetű szerint</div>
 
-      <select name="letters">
+      <select name="letters" className='select select-bordered w-full max-w-xs'>
         {engABC.map((letter, index) => (<option key={index} value={letter}>{letter}</option>))}
       </select>
 

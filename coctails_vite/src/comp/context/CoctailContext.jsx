@@ -8,20 +8,20 @@ const CoctailContext = createContext();
 
 export const CoctailProvider = ({ children }) => {
 
-    const [Refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
     const update = (prev) => { setRefresh(prev => !prev) }
 
 
-    const [Coctails, setCoctails] = useState(null);
-    const [IsPending, setIsPending] = useState(false);
+    const [coctails, setCoctails] = useState(null);
+    const [isPending, setIsPending] = useState(false);
 
-    const [FormData, setFormData] = useState('');
+    const [formData, setFormData] = useState('');
     const currentFormData = useRef({ current: "" });
 
 
 
-    const Search = async (form, byWhat) => {
+    const search = async (form, byWhat) => {
 
         if (form == "" || form == null) {
             setCoctails(null);
@@ -125,20 +125,16 @@ export const CoctailProvider = ({ children }) => {
 
 
     return <CoctailContext.Provider value={{
-        update,
+        update, refresh,
 
-        Search,
+        search,
 
-        FormData, setFormData,
+        formData, setFormData,
 
-        IsPending, setIsPending,
+        isPending, setIsPending,
 
-        Coctails, setCoctails
+        coctails, setCoctails
     }}>{children}</CoctailContext.Provider>
-
-
-
-
 }
 
 

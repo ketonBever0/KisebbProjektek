@@ -8,25 +8,7 @@ function ByIngredientNameResults({ coctails }, searchId) {
     const [CoctailData, setCoctailData] = useState(null);
 
 
-    const showBadges = () => {
-
-        Search(coctails.idDrink, "byId");
-        console.log(Coctails);
-
-        return (
-            <div className="badge badge-outline">{Coctails.strCategory}</div>
-        )
-
-    }
-
-
-    const Details = () => {
-
-    }
-
-
     return (
-
 
         <div className="card w-96 bg-base-100 shadow-xl">
             <figure><img src={coctails.strDrinkThumb} /></figure>
