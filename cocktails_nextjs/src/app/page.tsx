@@ -1,6 +1,12 @@
+import CocktailContext from '@/providers/CocktailContext';
 import Image from 'next/image'
+import { useContext } from 'react'
 
 export default function Home() {
+
+  const {
+    cocktail, setCocktail, cocktailPending, getRandomCocktail
+  } = useContext(CocktailContext);
 
 
 

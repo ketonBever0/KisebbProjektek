@@ -1,3 +1,5 @@
+"use client"
+
 import { createContext, useState } from "react";
 import { Cocktail } from "../types/CocktailTypes";
 import axios from "axios";
@@ -13,9 +15,9 @@ export const CocktailProvider = ({ children }: any) => {
     const [cocktailList, setCocktailList] = useState<any | null>([]);
 
 
-    const getRandomCocktail = (id: number | string) => {
+    const getRandomCocktail = async (id: number | string) => {
         setCocktailPending(true);
-        axios.get("www.thecocktaildb.com/api/json/v1/1/random.php")
+        await axios.get("www.thecocktaildb.com/api/json/v1/1/random.php")
             .then((res: any) => {
                 if (res.drinks[0]) setCocktail(res.drinks[0])
             })
@@ -26,9 +28,10 @@ export const CocktailProvider = ({ children }: any) => {
 
     return (
         <CocktailContext.Provider value={{
-
+            cocktail, setCocktail, cocktailPending, getRandomCocktail
         }}>
             {children}
         </CocktailContext.Provider>
     )
 }
+export default CocktailContext;

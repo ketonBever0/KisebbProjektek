@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Subject {
+  id               String           @unique @default(uuid())
+  name             String
+  lecturer         String
+  date             DateTime
+  subjectSessions  SubjectSession[]
+  subjectSessionId String           @unique
+
+  @@map("subjects")
+}
+
+model SubjectSession {
+  id        String   @unique @default(uuid())
+  name      String?
+  duration  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ended     Boolean  @default(false)
+  subject   Subject  @relation(fields: [subjectId], references: [subjectSessionId])
+  subjectId String
+  session   Session  @relation(fields: [sessionId], references: [subjectSessionId])
+  sessionId String
+
+  @@map("subjectsessions")
+}
+
+model Session {
+  id               String           @unique @default(uuid())
+  drinkTime        DateTime         @default(now())
+  status           String           @default("active")
+  subjectSessions  SubjectSession[]
+  subjectSessionId String           @unique
+
+  @@map("sessions")
+}
