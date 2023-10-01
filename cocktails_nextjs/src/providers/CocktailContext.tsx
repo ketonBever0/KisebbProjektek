@@ -9,20 +9,24 @@ const CocktailContext = createContext<any | null>(null);
 export const CocktailProvider = ({ children }: any) => {
 
 
-    const [cocktail, setCocktail] = useState<Cocktail>();
+    const [cocktail, setCocktail] = useState<Cocktail>(null);
     const [cocktailPending, setCocktailPending] = useState<boolean>(false);
+    const [cocktailRefresh, setCocktailRefresh] = useState<boolean>(false);
 
     const [cocktailList, setCocktailList] = useState<any | null>([]);
 
 
     const getRandomCocktail = async (id: number | string) => {
         setCocktailPending(true);
-        await axios.get("www.thecocktaildb.com/api/json/v1/1/random.php")
+        await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
             .then((res: any) => {
-                if (res.drinks[0]) setCocktail(res.drinks[0])
+                if (res.data.drinks[0]) {
+                    setCocktail(res.data.drinks[0]);
+                    
+                }
             })
             .catch(err => console.log(err))
-            .finally(() => setCocktailPending(false));
+            .finally(() => {setCocktailPending(false)});
     }
 
 

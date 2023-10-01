@@ -1,12 +1,26 @@
+"use client"
+
 import CocktailContext from '@/providers/CocktailContext';
+import { Cocktail } from '@/types/CocktailTypes';
+import axios from 'axios';
 import Image from 'next/image'
-import { useContext } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
+
 
 export default function Home() {
 
   const {
-    cocktail, setCocktail, cocktailPending, getRandomCocktail
+    cocktail, cocktailPending, cocktailRefresh, getRandomCocktail
   } = useContext(CocktailContext);
+
+
+  useEffect(() => {
+    if(cocktail == null) {
+      getRandomCocktail();
+    }
+
+  }, [cocktail, getRandomCocktail]);
+
 
 
 
@@ -15,11 +29,11 @@ export default function Home() {
 
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
-          <img src="/images/stock/photo-1635805737707-575885ab0820.jpg" className="max-w-sm rounded-lg shadow-2xl" />
+          {cocktail && <Image src={cocktail && !cocktailPending && cocktail.strDrinkThumb} priority={false} width={200} height={500} className="max-w-sm h-auto w-auto rounded-lg shadow-2xl" alt={''} />}
           <div>
-            <h1 className="text-5xl font-bold">Box Office News!</h1>
-            <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-            <button className="btn btn-primary">Get Started</button>
+            <h1 className="text-5xl font-bold">Welcome to my Cocktail Page!</h1>
+            <p className="py-6">Search and filter cocktail as you want...</p>
+            <button className="btn btn-primary">Feeling Lucky</button>
           </div>
         </div>
       </div>
