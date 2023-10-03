@@ -23,3 +23,9 @@ export type Cocktail = {
     strIngredient15: string;
 
 }
+
+export type FilteredList = {
+    strDrink: string;
+    strDrinkThumb: string;
+    idDrink: string;
+}
