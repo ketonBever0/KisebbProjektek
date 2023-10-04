@@ -2,10 +2,16 @@
 
 import AllFilters from "@/components/AllFilters";
 import CocktailContext from "@/providers/CocktailContext";
-import { useContext } from "react";
+import { Cocktail } from "@/types/CocktailTypes";
+import Image from "next/image";
+import { useContext, useEffect } from "react";
 
 export default function AllCocktails() {
-  const {} = useContext(CocktailContext);
+  const { cocktails, cocktailsPending } = useContext(CocktailContext);
+
+  // useEffect(() => {
+  //   console.log(cocktails);
+  // }, [cocktails])
 
   return (
     <div>
@@ -41,8 +47,42 @@ export default function AllCocktails() {
       {/* START: Filters */}
 
       <AllFilters />
-      
+
       {/* END: Filters */}
+      {/* START: Listing */}
+
+      <div className="mt-5">
+        <div className="grid grid-cols-3 gap-5">
+          {!cocktailsPending &&
+            cocktails.length != 0 &&
+            cocktails.map((cocktail: Cocktail, index: React.Key) => (
+              <div className="card w-96 bg-base-100 shadow-xl" key={index}>
+                <figure>
+                  <Image
+                    src={cocktail.strDrinkThumb}
+                    alt={`Picture of ${cocktail.strDrink}`}
+                    width={300}
+                    height={300}
+                    className="mt-4 rounded-md"
+                  />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                    {cocktail.strDrink}
+                    <div className="badge badge-secondary">{cocktail.strAlcoholic}</div>
+                  </h2>
+                  <p>{cocktail.strInstructions}</p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">{cocktail.strGlass}</div>
+                    <div className="badge badge-outline">{cocktail.strCategory}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* END: Listing */}
     </div>
   );
 }

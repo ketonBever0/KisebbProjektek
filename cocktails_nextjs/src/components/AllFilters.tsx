@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import CocktailContext from "@/providers/CocktailContext";
+import { useState, useEffect, useContext } from "react";
 
 export default function AllFilters() {
+  const { getCocktailsByName, getCocktailsByFirstLetter } =
+    useContext(CocktailContext);
+
   const [searchFilterOption, setSearchFilterOption] = useState("name");
 
   const changeSearchFilterOption = (e: any) => {
@@ -37,6 +41,9 @@ export default function AllFilters() {
     "Y",
     "Z",
   ];
+
+  const [searchName, setSearchName] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState("");
 
   return (
     <div className="grid grid-flow-col grid-cols-3 place-content-around gap-10">
@@ -80,22 +87,58 @@ export default function AllFilters() {
           {/* <span className="label-text-alt">Top Right label</span> */}
         </label>
         {searchFilterOption == "name" ? (
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered focus:input-secondary w-72 max-w-xs "
-          />
+          <div>
+            <form>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered focus:input-secondary w-72 max-w-xs "
+                value={searchName}
+                onChange={(e: any) => {
+                  setSearchName(e.target.value);
+                }}
+              />
+              <button
+                className="btn btn-accent"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  getCocktailsByName(searchName);
+                }}
+              >
+                Search
+              </button>
+            </form>
+          </div>
         ) : (
-          <select className="select select-accent w-72 max-w-xs">
-            <option disabled selected value={""}>
-              Choose a letter...
-            </option>
-            {alphabet.map((letter: string, index: React.Key) => (
-              <option value={letter} key={index}>
-                {letter}
-              </option>
-            ))}
-          </select>
+          <div>
+            <form>
+              <select
+                className="select select-accent w-72 max-w-xs"
+                value={selectedLetter}
+                onChange={(e: any) => {
+                  setSelectedLetter(e.target.value);
+                }}
+              >
+                <option disabled selected value={""}>
+                  Choose a letter...
+                </option>
+                {alphabet.map((letter: string, index: React.Key) => (
+                  <option value={letter} key={index}>
+                    {letter}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="btn btn-accent"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  getCocktailsByFirstLetter(selectedLetter);
+                }}
+              >
+                Search
+              </button>
+            </form>
+          </div>
         )}
       </div>
 
