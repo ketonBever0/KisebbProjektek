@@ -7,11 +7,13 @@ import Image from "next/image";
 import { useContext, useEffect } from "react";
 
 export default function AllCocktails() {
-  const { cocktails, cocktailsPending } = useContext(CocktailContext);
+  const {
+    cocktails,
+    cocktailsPending,
+    selectedFilter
+  } = useContext(CocktailContext);
 
-  // useEffect(() => {
-  //   console.log(cocktails);
-  // }, [cocktails])
+  
 
   return (
     <div>
@@ -52,10 +54,15 @@ export default function AllCocktails() {
       {/* START: Listing */}
 
       <div className="mt-5">
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg-grid-cols-3 gap-5">
           {!cocktailsPending &&
             cocktails.length != 0 &&
-            cocktails.map((cocktail: Cocktail, index: React.Key) => (
+            cocktails
+            .filter((x: Cocktail) => x.strCategory == (selectedFilter.category != "" ? selectedFilter.category : x.strCategory))
+            .filter((x: Cocktail) => x.strGlass == (selectedFilter.glass != "" ? selectedFilter.glass : x.strGlass))
+            .filter((x: Cocktail) => (x.strIngredient1 || x.strIngredient2 || x.strIngredient3 || x.strIngredient4 || x.strIngredient5 || x.strIngredient6 || x.strIngredient7 || x.strIngredient8 || x.strIngredient9 || x.strIngredient10 || x.strIngredient11 || x.strIngredient12 || x.strIngredient13 || x.strIngredient14 || x.strIngredient15) == (selectedFilter.ingredient != "" ? selectedFilter.ingredient : (x.strIngredient1 || x.strIngredient2 || x.strIngredient3 || x.strIngredient4 || x.strIngredient5 || x.strIngredient6 || x.strIngredient7 || x.strIngredient8 || x.strIngredient9 || x.strIngredient10 || x.strIngredient11 || x.strIngredient12 || x.strIngredient13 || x.strIngredient14 || x.strIngredient15)))
+            .filter((x: Cocktail) => x.strAlcoholic == (selectedFilter.alcoholic != "" ? selectedFilter.alcoholic : x.strAlcoholic))
+            .map((cocktail: Cocktail, index: React.Key) => (
               <div className="card w-96 bg-base-100 shadow-xl" key={index}>
                 <figure>
                   <Image
@@ -69,7 +76,7 @@ export default function AllCocktails() {
                 <div className="card-body">
                   <h2 className="card-title">
                     {cocktail.strDrink}
-                    <div className="badge badge-secondary">{cocktail.strAlcoholic}</div>
+                    {cocktail.strAlcoholic == "Alcoholic" && <div className="badge badge-error">{cocktail.strAlcoholic}</div>}
                   </h2>
                   <p>{cocktail.strInstructions}</p>
                   <div className="card-actions justify-end">

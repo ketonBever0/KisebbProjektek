@@ -29,3 +29,17 @@ export type FilteredList = {
     strDrinkThumb: string;
     idDrink: string;
 }
+
+export type FilterType = {
+    categories: Array<Object>,
+    glasses: Array<Object>,
+    ingredients: Array<Object>,
+    alcoholic: Array<Object>
+}
+
+export type SelectedFilterType = {
+    category: string,
+    glass: string,
+    ingredient: string,
+    alcoholic: string
+}

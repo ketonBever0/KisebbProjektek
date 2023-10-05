@@ -15,7 +15,8 @@ export default function Home() {
     if (cocktail == null) {
       getRandomCocktail();
     }
-  }, [cocktail, getRandomCocktail]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -35,8 +36,12 @@ export default function Home() {
             <h1 className="text-5xl font-bold">Welcome to my Cocktail Page!</h1>
             <p className="py-6">Search and filter cocktail as you want...</p>
             <div className="flex gap-4">
-              <Link href="/all" className="btn btn-secondary">Got It</Link>
-              <Link href="/random" className="btn btn-primary">Feeling Lucky Today?</Link>
+              <Link href="/search" className="btn btn-secondary">
+                Got It!
+              </Link>
+              <Link href="/random" className="btn btn-primary">
+                Feeling Lucky Today?
+              </Link>
             </div>
           </div>
         </div>
