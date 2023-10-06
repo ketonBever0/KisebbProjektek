@@ -54,7 +54,7 @@ export default function AllCocktails() {
       {/* START: Listing */}
 
       <div className="mt-5">
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg-grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {!cocktailsPending &&
             cocktails.length != 0 &&
             cocktails
