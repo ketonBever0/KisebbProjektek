@@ -162,6 +162,8 @@ export default function Home() {
 
       </div>
 
+      <footer className='text-amber-500 text-xs text-center bg-blue-600/40 w-full fixed bottom-0'>Made by László Kurucz</footer>
+
     </main>
   )
 }
