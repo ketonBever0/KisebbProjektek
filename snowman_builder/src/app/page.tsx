@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center pt-10 p-24 bg-gradient-to-b from-red-800 to-30% via-green-800 to-slate-700">
 
-      <h1 className='text-3xl mb-10'>SnowMan builder Just4Fun!</h1>
+      <h1 className='text-3xl mb-10 text-white'>SnowMan builder Just4Fun!</h1>
 
       <form>
 
@@ -94,19 +94,19 @@ export default function Home() {
         <div className='flex flex-wrap justify-center gap-5 mb-5'>
 
           <div>
-            <label htmlFor='minSizeInput'>Min size:</label><br />
+            <label htmlFor='minSizeInput' className='text-white'>Min size:</label><br />
             <input type='number' id='minSizeInput' value={min} onChange={(e: any) => setMin(e.target.value)}
               className='bg-sky-700 text-center border rounded-md' min={0} />
           </div>
 
           <div>
-            <label htmlFor='maxSizeInput'>Max size:</label><br />
+            <label htmlFor='maxSizeInput' className='text-white'>Max size:</label><br />
             <input type='number' id='maxSizeInput' value={max} onChange={(e: any) => setMax(e.target.value)}
               className='bg-sky-700 text-center border rounded-md' min={0} />
           </div>
 
           <div>
-            <label htmlFor='quantityInput'>How many?</label><br />
+            <label htmlFor='quantityInput' className='text-white'>How many?</label><br />
             <input type='number' id='quantityInput' value={quantity} onChange={(e: any) => setQuantity(e.target.value)}
               className='mx-auto w-40 bg-sky-700 text-center border rounded-md' />
           </div>
@@ -115,7 +115,7 @@ export default function Home() {
 
 
         <div className='flex justify-center mt-10'>
-          <button className='rounded-lg p-2 bg-blue-800 hover:bg-blue-700 active:bg-blue-900 transition-all'
+          <button className='rounded-lg p-2 bg-blue-800 hover:bg-blue-700 active:bg-blue-900 transition-all text-white'
             onClick={(e: any) => {
               e.preventDefault();
               geterateSnowmen();
@@ -128,7 +128,7 @@ export default function Home() {
 
       {
         snowmen.length > 0 &&
-        <p className='mt-7 text-center'>
+        <p className='mt-7 text-center text-white'>
           {
             snowmen.length == 1 &&
             <>(Click on that SnowMan to regenerate)</>
