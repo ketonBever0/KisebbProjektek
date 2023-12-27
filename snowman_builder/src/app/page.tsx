@@ -96,19 +96,19 @@ export default function Home() {
           <div>
             <label htmlFor='minSizeInput' className='text-white'>Min size:</label><br />
             <input type='number' id='minSizeInput' value={min} onChange={(e: any) => setMin(e.target.value)}
-              className='bg-sky-700 text-center border rounded-md' min={0} />
+              className='bg-sky-700 text-center border rounded-md text-white' min={0} />
           </div>
 
           <div>
             <label htmlFor='maxSizeInput' className='text-white'>Max size:</label><br />
             <input type='number' id='maxSizeInput' value={max} onChange={(e: any) => setMax(e.target.value)}
-              className='bg-sky-700 text-center border rounded-md' min={0} />
+              className='bg-sky-700 text-center border rounded-md text-white' min={0} />
           </div>
 
           <div>
             <label htmlFor='quantityInput' className='text-white'>How many?</label><br />
             <input type='number' id='quantityInput' value={quantity} onChange={(e: any) => setQuantity(e.target.value)}
-              className='mx-auto w-40 bg-sky-700 text-center border rounded-md' />
+              className='mx-auto w-40 bg-sky-700 text-center border rounded-md text-white' />
           </div>
 
         </div>
