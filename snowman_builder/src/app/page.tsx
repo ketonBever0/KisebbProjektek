@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center pt-10 p-24 bg-gradient-to-b from-red-800 to-30% via-green-800 to-slate-700">
 
-      <h1 className='text-3xl mb-10 text-white'>SnowMan builder Just4Fun!</h1>
+      <h1 className='text-3xl mb-10 text-white text-center'>SnowMan builder Just4Fun!</h1>
 
       <form>
 
