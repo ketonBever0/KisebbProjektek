@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Permission {
+  CREATE_ROLE         @map("createRole")
+  MODIFY_OTHERS_ROLE  @map("modifyOthersRole")
+  CREATE_POST         @map("createPost")
+  PUBLISH_THEIR_POST  @map("publishTheirPost")
+  PUBLISH_OTHERS_POST @map("publisOthersPost")
+  EDIT_THEIR_POST     @map("editTheirPost")
+  EDIT_OTHERS_POST    @map("editOthersPost")
+  DELETE_OTHERS_POST  @map("deleteOthersPost")
+}
+
+model Organization {
+  id    Int    @id @default(autoincrement())
+  name  String
+  roles Role[]
+}
+
+model Role {
+  id             Int          @id @default(autoincrement())
+  name           String
+  creator        User         @relation(fields: [creatorId], references: [id])
+  creatorId      Int
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  roles          UserRole[]
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+  userId Int
+  roleId Int
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  username     String     @unique
+  email        String     @unique
+  password     String
+  fullName     String?
+  birthDate    DateTime
+  regDate      DateTime
+  lastLogin    DateTime
+  roles        UserRole[]
+  createdRoles Role[]
+
+  @@map("users")
+}
