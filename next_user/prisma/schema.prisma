@@ -9,56 +9,112 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 enum Permission {
-  CREATE_ROLE         @map("createRole")
-  MODIFY_OTHERS_ROLE  @map("modifyOthersRole")
-  CREATE_POST         @map("createPost")
-  PUBLISH_THEIR_POST  @map("publishTheirPost")
-  PUBLISH_OTHERS_POST @map("publisOthersPost")
-  EDIT_THEIR_POST     @map("editTheirPost")
-  EDIT_OTHERS_POST    @map("editOthersPost")
-  DELETE_OTHERS_POST  @map("deleteOthersPost")
+  //  Members
+  KICK_MEMBERS        @map("kick_members")
+  BAN_MEMBERS         @map("ban_members")
+  //  Roles
+  CREATE_ROLE         @map("create_role")
+  MODIFY_OTHERS_ROLE  @map("modify_others_role")
+  //  Posts
+  CREATE_POST         @map("create_post")
+  PUBLISH_THEIR_POST  @map("publish_their_post")
+  PUBLISH_OTHERS_POST @map("publish_others_post")
+  EDIT_THEIR_POST     @map("edit_their_post")
+  EDIT_OTHERS_POST    @map("edit_others_post")
+  DELETE_OTHERS_POST  @map("delete_others_post")
+  //  Comments
+  DELETE_COMMENTS     @map("delete_comments")
+
+  @@map("permissions")
 }
 
-model Organization {
-  id    Int    @id @default(autoincrement())
-  name  String
-  roles Role[]
+model RolePermission {
+  id Int @id @default(autoincrement())
+  permission Permission
+  role Role @relation(fields: [roleId], references: [id])
+  roleId Int @map("role_id")
+  
+  @@map("role_permissions")
 }
 
 model Role {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   name           String
-  creator        User         @relation(fields: [creatorId], references: [id])
-  creatorId      Int
+  rolePermissions RolePermission[]
+  level          Int
   organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId Int?
+  organizationId Int?          @map("organization_id")
   roles          UserRole[]
+
+  @@map("roles")
+}
+
+model Organization {
+  id        Int                      @id @default(autoincrement())
+  name      String
+  owners    OrganizationsUserOwned[]
+  creator   User                     @relation(fields: [creatorId], references: [id])
+  creatorId Int                      @map("creator_id")
+  posts     Post[]
+  roles     Role[]
+
+  @@map("organizations")
 }
 
 model UserRole {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  role   Role @relation(fields: [roleId], references: [id])
-  userId Int
-  roleId Int
+  id        Int  @id @default(autoincrement())
+  role      Role @relation(fields: [roleId], references: [id])
+  roleId    Int  @map("role_id")
+  user      User @relation(fields: [userId], references: [id])
+  userId    Int  @map("user_id")
+  creator   User @relation(fields: [creatorId], references: [id], name: "creator")
+  creatorId Int  @map("creator_id")
+
+  @@map("user_roles")
+}
+
+model OrganizationsUserOwned {
+  id             Int          @id @default(autoincrement())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int          @map("organization_id")
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int          @map("user_id")
+
+  @@map("organizations_user_owned")
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  username     String     @unique
-  email        String     @unique
-  password     String
-  fullName     String?
-  birthDate    DateTime
-  regDate      DateTime
-  lastLogin    DateTime
-  roles        UserRole[]
-  createdRoles Role[]
+  id                   Int                      @id @default(autoincrement())
+  username             String                   @unique
+  email                String                   @unique
+  password             String
+  fullName             String?                  @map("full_name")
+  birthDate            DateTime                 @map("birth_date")
+  regDate              DateTime                 @map("registration_date")
+  lastLogin            DateTime                 @map("last_login")
+  postsCreated         Post[]
+  ownedOrganizations   OrganizationsUserOwned[]
+  createdOrganizations Organization[]
+  roles                UserRole[]
+  createdRoles         UserRole[]               @relation(name: "creator")
 
   @@map("users")
+}
+
+model Post {
+  id             Int          @id @default(autoincrement())
+  author         User         @relation(fields: [authorId], references: [id])
+  authorId       Int          @map("author_id")
+  title          String
+  headline       String
+  content        String       @db.LongText
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int          @map("organization_id")
+
+  @@map("posts")
 }
